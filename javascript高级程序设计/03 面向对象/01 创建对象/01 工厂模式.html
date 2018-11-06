@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<script>
+//出现原因：使用Object构造函数或者对象字面量创建对象会产生很多重复的代码，所以出现了工厂模式。
+    function creatPerson(name, age, job) {
+        var o = new Object();
+        o.name = name;
+        o.age = age;
+        o.job = job;
+        o.sayName = function( ){
+            alert(this.name);
+        }
+        return o;
+    }
+    var person1 = creatPerson('liucongmei', 24, 'Software Engineer');
+    person1.sayName();
+    var person2 = creatPerson('Greg', 27, 'Doctor');
+//缺点：虽然解决了创建多个相似对象的问题，但却不知道一个对象的类型。所以出现了构造函数模式。
+</script>
+</body>
+</html>

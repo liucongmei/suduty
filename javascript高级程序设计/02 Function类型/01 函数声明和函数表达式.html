@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<script>
+// 解析器会率先读取函数声明，使其在执行任何代码钱=前都可访问，而函数表达式，解析器执行其所在的代码，才会被解释执行
+    alert(sum(10, 10));
+    function sum(num1, num2) {
+        return num1 + num2;
+    }
+    alert(sum2(10,10)) //sum2 is not defined
+    var sunm2 = function(num1, num2) {
+        return num1 + num2;
+    }
+</script>
+</body>
+</html>

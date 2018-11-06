@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    //------------------const基本用法，声明只读变量，声明不可更改------------------------
+        const PI = 3.1415;
+        // PI = 3; //TypeError: Assignment to constant variable.
+        //const一旦声明变量，就必须立即初始化，不能留到以后赋值。
+       // const foo; //SyntaxError: Missing initializer in const declaration
+
+    //----------------------const只在声明所在的块级作用域内有效。-------------------------------
+//        if (true) {
+//            const MAX = 5;
+//        }
+
+       // console.log(MAX) // Uncaught ReferenceError: MAX is not defined
+
+    //---------------------------const变量只能在声明后使用，不存在变量的提升---------------------
+        if (true) {
+//            console.log(MAX); // ReferenceError MAX is not defined
+            const MAX = 5;
+        }
+
+
+    //------------------------const变量与let变量一样不可重复声明--------------------
+        var message = "Hello!";
+        let age = 25;
+
+//        // 以下两行都会报错
+//        const message = "Goodbye!"; //Uncaught SyntaxError: Identifier 'message' has already been declared
+//        const age = 30;
+        if(true) {
+            const message = "Goodbye!";//这样既可修正，不会报错
+        }
+    </script>
+</body>
+</html>

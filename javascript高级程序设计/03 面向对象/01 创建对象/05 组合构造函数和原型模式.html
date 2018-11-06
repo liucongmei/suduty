@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+//--------------最常见的方式，构造函数用于定义实例属性，原型模式用于定义方法和共享的属性
+    function Person(name, age, job) {
+        this.name = name;
+        this.age = age;
+        this.job = job;
+        this.friends = ["Liucongmei", "Greg"]
+    }
+    Person.prototype = {
+        constructor: Person,
+        sayName: function() {
+            alert(this.name);
+        }
+    }
+    var person1 = new Person("Nicholas", 20, "Software Engineer");
+    var person2 = new Person("Liuwanchang", 24, "Doctor");
+    person1.friends.push('Xuhaitao');
+    alert(person1.friends); //"Liucongmei", "Greg","Xuhaitao"
+    alert(person2.friends); //"Liucongmei", "Greg"
+    alert(person1.friends === person2.friends); //false
+    alert(person1.sayName === person2.sayName); //true
+</script>
+</body>
+</html>

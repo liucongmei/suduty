@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<style type="text/css">
+	*{
+		margin: 0;padding: 0;
+	}
+	#main {
+		width: 100%;height:100vh;position: relative;
+	}
+	.left {
+		position: relative;left: 0;top: 0;width: 20%;height: 100vh;background-color: #ccc;
+	}
+	.content {
+		position: absolute;left: 20%;top: 0;height: 100vh;width: 80%;background-color: #ddd;
+	}
+	.top-title {
+		height: 30px;background-color: #fff;margin:0 0 10px 0;
+	}
+	.chart-wrap {
+		background-color: #eee;
+	}
+	.chart-content {
+		height: 500px;width: 1500px;
+	}
+	
+</style>
+<body>
+	<div id="main">
+		<div class="left"></div>
+		<div class="content">
+			<div class="top-title"></div>
+			<div class="chart-wrap">
+				<div class="time">
+					<button onclick="settime(5)">5天</button>
+					<button onclick="settime(10)">10天</button>
+					<button onclick="settime(15)">15天</button>
+				</div>
+				<div class="type">
+					<button onclick="settype('bar')">百分比</button>
+				</div>
+				<div class="chart-content" id="chart-content"></div>
+			</div>
+			<div id="bar-warp">
+				<div class="time">
+					<button onclick="settime(30)">30天</button>
+					<button onclick="settime(90)">90天</button>
+					<button onclick="settime(180)">半年</button>
+				</div>
+				<div class="chart-content" id="chart-content"></div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="./js/plugins/jquery.min.js"></script>
+<script type="text/javascript" src="./js/plugins/echarts.js"></script>
+<script type="text/javascript" src="./js/Helper.js"></script>
+<script type="text/javascript">
+	function getTimeArr(oldDate) {
+		var date = new Date(), dataArr = [], currentYear = date.getFullYear(), currentMonth = date.getMonth()+1, currentDay = date.getDate();
+		if(oldDate.getFullYear() === currentYear) {
+			for(let index = oldDate.getMonth()+1; index <= currentMonth; index++) {
+	   			switch (index) {
+	   				case 1:
+	   				case 3:
+	   				case 5: 
+	   				case 7: 
+	   				case 8: 
+	   				case 10:
+	   				case 12:
+	   					if(index === oldDate.getMonth()+1) {
+	   						for(let m = oldDate.getDate()+1; m <= 31; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else if(index === currentMonth) {
+	   						for(let m = 1; m <= currentDay; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else {
+	   						for(let m = 1; m <= 31; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}
+	   					
+	   					// return 31;
+	   					break;
+	   				case 2:
+	   					if(index === oldDate.getMonth()+1) {
+	   						console.log('2月');
+	   						for(let m = oldDate.getDate()+1; m <= 28; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else if(index === currentMonth) {
+	   						console.log('2月');
+	   						for(let m = 1; m <= currentDay; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else {
+	   						console.log('2月');
+	   						for(let m = 1; m <= 28; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}
+	   					// for(let m = 1; m <= 28; m++) {
+	   					// 	dataArr.push(index + '月' + m + '日')
+	   					// } 
+	   					// return 28;
+	   					break;
+	   				case 4:
+	   				case 6:
+	   				case 9:
+	   				case 11:
+	   					if(index === oldDate.getMonth()+1) {
+	   						for(let m = oldDate.getDate()+1; m <= 30; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else if(index === currentMonth) {
+	   						for(let m = 1; m <= currentDay; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else {
+	   						for(let m = 1; m <= 30; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}
+	   					// for(let m = dd.getDate()+1; m <= 30; m++) {
+	   					// 	dataArr.push(index + '月' + m + '日')
+	   					// }
+	   					// return 30;
+	   					break;		
+	   			}
+   			}
+		}else {
+			
+			for(let year = oldDate.getFullYear(); year <= currentYear; year++) {
+				if(year !== currentYear) {
+					for(let index = oldDate.getMonth()+1; index <= 12; index++) {
+	   				
+	   			switch (index) {
+	   				case 1:
+	   				case 3:
+	   				case 5: 
+	   				case 7: 
+	   				case 8: 
+	   				case 10:
+	   				case 12:
+	   					if(index === oldDate.getMonth()+1) {
+	   						for(let m = oldDate.getDate()+1; m <= 31; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else if(index === currentMonth) {
+	   						for(let m = 1; m <= currentDay; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else {
+	   						for(let m = 1; m <= 31; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}
+	   					
+	   					// return 31;
+	   					break;
+	   				case 2:
+	   					if(index === oldDate.getMonth()+1) {
+	   						for(let m = oldDate.getDate()+1; m <= 28; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else if(index === currentMonth) {
+	   						for(let m = 1; m <= currentDay; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else {
+	   						for(let m = 1; m <= 28; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}
+	   					// for(let m = 1; m <= 28; m++) {
+	   					// 	dataArr.push(index + '月' + m + '日')
+	   					// } 
+	   					// return 28;
+	   					break;
+	   				case 4:
+	   				case 6:
+	   				case 9:
+	   				case 11:
+	   					if(index === oldDate.getMonth()+1) {
+	   						for(let m = oldDate.getDate()+1; m <= 30; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else if(index === currentMonth) {
+	   						for(let m = 1; m <= currentDay; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else {
+	   						for(let m = 1; m <= 30; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}
+	   					// for(let m = dd.getDate()+1; m <= 30; m++) {
+	   					// 	dataArr.push(index + '月' + m + '日')
+	   					// }
+	   					// return 30;
+	   					break;		
+	   				}
+   				}
+				}else {
+					for(let index = 1; index <= currentMonth; index++) {
+	   			
+	   			switch (index) {
+	   				case 1:
+	   				case 3:
+	   				case 5: 
+	   				case 7: 
+	   				case 8: 
+	   				case 10:
+	   				case 12:
+	   					if(index === oldDate.getMonth()+1) {
+	   						for(let m = oldDate.getDate()+1; m <= 31; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else if(index === currentMonth) {
+	   						for(let m = 1; m <= currentDay; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else {
+	   						for(let m = 1; m <= 31; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}
+	   					
+	   					// return 31;
+	   					break;
+	   				case 2:
+	   					if(index === oldDate.getMonth()+1) {
+	   						for(let m = oldDate.getDate()+1; m <= 28; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else if(index === currentMonth) {
+	   						for(let m = 1; m <= currentDay; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else {
+	   						for(let m = 1; m <= 28; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}
+	   					// for(let m = 1; m <= 28; m++) {
+	   					// 	dataArr.push(index + '月' + m + '日')
+	   					// } 
+	   					// return 28;
+	   					break;
+	   				case 4:
+	   				case 6:
+	   				case 9:
+	   				case 11:
+	   					if(index === oldDate.getMonth()+1) {
+	   						for(let m = oldDate.getDate()+1; m <= 30; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else if(index === currentMonth) {
+	   						for(let m = 1; m <= currentDay; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}else {
+	   						for(let m = 1; m <= 30; m++) {
+	   							dataArr.push(index + '月' + m + '日')
+	   						}
+	   					}
+	   					// for(let m = dd.getDate()+1; m <= 30; m++) {
+	   					// 	dataArr.push(index + '月' + m + '日')
+	   					// }
+	   					// return 30;
+	   					break;		
+	   			}
+   			}
+				}	
+			}
+		}
+		
+   		return dataArr;
+	}
+	// var bardata = ['10%', '20%', '5%', '53%', '60%', '78%', '12%', '89%', 63%, 56%,
+	// 				10%, 20%, 5%, 53%, 60%, 78%, 12%, 89%, 63%, 56%,
+	// 				10%, 20%, 5%, 53%, 60%, 78%, 12%, 89%, 63%, 56%,
+	// ]
+	function formatDate(now) {
+		var now = new Date(now);
+	　　var year = now.getFullYear(),
+	　　month = now.getMonth() + 1,
+	　　date = now.getDate(),
+	　　hour = now.getHours(),
+	　　minute = now.getMinutes(),
+	　　second = now.getSeconds();
+	 
+	　　return year + "年" + month + "月" + date + "日";
+	}
+	function getData() {
+		var dataObj = {};
+		var lineDownloadData = [], barLoadPercentage = [], xTimeData = [], barOtherPercentage = [];
+		$.getJSON('./data.json', function(res) {
+			if(res.status === 200) {
+				res.result.forEach(function(v) {
+					lineDownloadData.push(v.download);
+					xTimeData.push(formatDate(v.time));
+					barLoadPercentage.push(parseInt(v.download/(v.download + v.other)*100))
+					
+				})
+				console.log(xTimeData)
+			}
+			for(let index = 0; index< barLoadPercentage.length; index++) {
+				barOtherPercentage.push(100-barLoadPercentage[index]);
+			}
+		
+			dataObj.lineDownloadData = lineDownloadData;
+		dataObj.barLoadPercentage = barLoadPercentage;
+		dataObj.xTimeData = xTimeData;
+		dataObj.barOtherPercentage = barOtherPercentage;
+		
+		return dataObj;
+		})
+		
+		console.log(dataObj)
+		
+	}
+	var data = getData();
+	// console.log(data.barLoadPercentage)
+	function settype(type) {
+		alert(type);
+
+		var barData = [{
+                name: '下载行业占比',
+                type: 'bar',
+                data: data.barLoadPercentage,
+                barWidth: 20,
+                stack: '关键词'
+            //      itemStyle: {  
+            //     normal: {  
+            //         label: {  
+            //             show: true,  
+            //             position: 'top',  
+            //             formatter: '{b}\n{c}%'  
+            //         }  
+            //     }  
+            // }, 
+            }, {
+            	name: '其他行业',
+                type: 'bar',
+                data: data.barOtherPercentage,
+                stack: '关键词'
+            }],
+            yAxis = [{ 
+        		type: 'value',  
+            	axisLabel: {  
+                  show: true,  
+                  interval: 'auto',  
+                  formatter: '{value} %'  
+                },  
+            	show: true,
+            	min: 0,
+				max: 100
+        	}],legendData = ['下载行业占比', '其他行业']
+		;
+        chartOption.yAxis = yAxis;
+        chartOption.legend.data = legendData;	
+		// chartOption.series[0].type = 'bar';
+		chartOption.series = barData;
+		new EchartsHelper($('#chart-content')[0], chartOption);
+	}
+	function GetDateStr(AddDayCount) { 
+
+	var dd = new Date(), currentYear = dd.getFullYear(), currentMonth = dd.getMonth()+1, currentDay = dd.getDate(); 
+	console.log('当前的日期'+currentMonth);   
+    dd.setDate(dd.getDate()+AddDayCount);//获取AddDayCount天后的日期    
+    var y = dd.getFullYear();     
+    var m = (dd.getMonth()+1)<10?"0"+(dd.getMonth()+1):(dd.getMonth()+1);//获取当前月份的日期，不足10补0    
+    var d = dd.getDate()<10?"0"+dd.getDate():dd.getDate();//获取当前几号，不足10补0
+    
+    var dataArr = getTimeArr(dd);
+
+    // if(currentYear === y) {
+   	// 	console.log('在同一年');
+   	// 	dataArr = getTimeArr(dd);
+   	// 	// for(let index = dd.getMonth()+1; index <= currentMonth; index++) {
+   	// 	// 	console.log('循环月份数'+ index);
+   	// 	// 	switch (index) {
+   	// 	// 		case 1:
+   	// 	// 		case 3:
+   	// 	// 		case 5: 
+   	// 	// 		case 7: 
+   	// 	// 		case 8: 
+   	// 	// 		case 10:
+   	// 	// 		case 12:
+   	// 	// 			if(index === dd.getMonth()+1) {
+   	// 	// 				for(let m = dd.getDate()+1; m <= 31; m++) {
+   	// 	// 					dataArr.push(index + '月' + m + '日')
+   	// 	// 				}
+   	// 	// 			}else if(index === currentMonth) {
+   	// 	// 				for(let m = 1; m <= currentDay; m++) {
+   	// 	// 					dataArr.push(index + '月' + m + '日')
+   	// 	// 				}
+   	// 	// 			}else {
+   	// 	// 				for(let m = 1; m <= 31; m++) {
+   	// 	// 					dataArr.push(index + '月' + m + '日')
+   	// 	// 				}
+   	// 	// 			}
+   					
+   	// 	// 			// return 31;
+   	// 	// 			break;
+   	// 	// 		case 2:
+   	// 	// 			if(index === dd.getMonth()+1) {
+   	// 	// 				for(let m = dd.getDate()+1; m <= 28; m++) {
+   	// 	// 					dataArr.push(index + '月' + m + '日')
+   	// 	// 				}
+   	// 	// 			}else if(index === currentMonth) {
+   	// 	// 				for(let m = 1; m <= currentDay; m++) {
+   	// 	// 					dataArr.push(index + '月' + m + '日')
+   	// 	// 				}
+   	// 	// 			}else {
+   	// 	// 				for(let m = 1; m <= 28; m++) {
+   	// 	// 					dataArr.push(index + '月' + m + '日')
+   	// 	// 				}
+   	// 	// 			}
+   	// 	// 			// for(let m = 1; m <= 28; m++) {
+   	// 	// 			// 	dataArr.push(index + '月' + m + '日')
+   	// 	// 			// } 
+   	// 	// 			// return 28;
+   	// 	// 			break;
+   	// 	// 		case 4:
+   	// 	// 		case 6:
+   	// 	// 		case 9:
+   	// 	// 		case 11:
+   	// 	// 			if(index === dd.getMonth()+1) {
+   	// 	// 				for(let m = dd.getDate()+1; m <= 30; m++) {
+   	// 	// 					dataArr.push(index + '月' + m + '日')
+   	// 	// 				}
+   	// 	// 			}else if(index === currentMonth) {
+   	// 	// 				for(let m = 1; m <= currentDay; m++) {
+   	// 	// 					dataArr.push(index + '月' + m + '日')
+   	// 	// 				}
+   	// 	// 			}else {
+   	// 	// 				for(let m = 1; m <= 30; m++) {
+   	// 	// 					dataArr.push(index + '月' + m + '日')
+   	// 	// 				}
+   	// 	// 			}
+   	// 	// 			// for(let m = dd.getDate()+1; m <= 30; m++) {
+   	// 	// 			// 	dataArr.push(index + '月' + m + '日')
+   	// 	// 			// }
+   	// 	// 			// return 30;
+   	// 	// 			break;		
+   	// 	// 	}
+   	// 	// }
+   	// }else {
+
+   	// 	console.log('不在同一年')
+   	// 	for(let year = y; year <= currentYear; year++) {
+
+   	// 		console.log('year'+year)
+   	// 	}
+   	// }
+
+
+   // return y+"-"+m+"-"+d;
+   return dataArr;     
+}
+
+	var res = {
+		data: [20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32]
+	 }, xAxisTime = GetDateStr(-30);
+	var chartOption = {
+		legend: {
+			data:['下载行业数据分析']
+		},
+		xAxis: {
+			type: 'category',
+		    // data: ['3月1日', '3月2日', '3月3日', '3月4日', '3月5日', '3月6日', '3月7日', '3月8日', '3月9日', '3月10日',
+		    // 	   '3月11日', '3月12日', '3月13日', '3月14日', '3月15日', '3月16日', '3月17日', '3月18日', '3月19日', '3月20日',
+		    // 	   '3月21日', '3月21日', '3月23日', '3月24日', '3月25日', '3月26日', '3月27日', '3月28日', '3月29日', '3月30日'
+		    // ],
+		    data: xAxisTime,
+		    axisLabel:{
+				interval:0,
+				rotate:40
+			}
+		},
+		yAxis: {
+	        type: 'value',
+	    },
+	    grid: {
+	    	left: '5%',
+	    	top: '5%',
+	    	right: '2%'
+	    },
+	    series: [
+	    	{
+	    		data: res.data,
+	    		type: 'line',
+	    		name: '下载行业数据分析',
+	    	}
+	    ]
+	} 
+	function settime(daynumber) {
+		if(daynumber === 30) {
+			xAxisTime = GetDateStr(-30);
+			chartOption.xAxis.axisLabel.interval = 0;
+			chartOption.xAxis.data = xAxisTime;
+			res.data =  [20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,]
+
+			chartOption.series[0].data = res.data;
+		}else if(daynumber === 90) {
+			xAxisTime = GetDateStr(-90);
+			chartOption.xAxis.axisLabel.interval = 3;
+			chartOption.xAxis.data = xAxisTime;
+			console.log(chartOption)
+			res.data = [20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,]
+			chartOption.series[0].data = res.data; 
+		}else {
+			xAxisTime = GetDateStr(-180);
+			chartOption.xAxis.axisLabel.interval = 15;
+			chartOption.xAxis.data = xAxisTime;
+			res.data = [20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32,
+			   20, 10, 5, 60, 80, 55, 78, 56, 75, 32]
+			   chartOption.series[0].data = res.data;
+		}
+
+
+		new EchartsHelper($('#chart-content')[0], chartOption)
+		// console.log(chartOption)
+		// if (myChart != null && myChart != "" && myChart != undefined) {  
+  //       	myChart.dispose();  
+  //   	} 
+		// var myChart = echarts.init(document.getElementById('chart-content'));
+		// myChart.setOption(chartOption);
+		
+		// echarts.init(document.getElementById('chart-content')).setOption(chartOption)
+		// $('#chart-content').echartsHelper(chartOption)
+
+	}
+	
+	console.log(xAxisTime);
+
+	new EchartsHelper($('#chart-content')[0], chartOption)
+
+
+	// $('#chart-content').echartsHelper(chartOption)
+
+
+// console.log("半年前："+GetDateStr(-180));
+// console.log("90天前："+GetDateStr(-90));
+// console.log("30天前："+GetDateStr(-30));
+
+
+
+
+	// var startDate = new Date();
+ //            var endDate = new Date();
+ //            endDate.setDate(startDate.getDate() - 30);
+ //            var dataArr = [];
+ //            var weeks = ['日', '一', '二', '三', '四', '五', '六'];
+ //            while((endDate.getTime() - startDate.getTime()) >= 0) {
+ //                var month = (startDate.getMonth() + 1).toString().length == 1 ? "0" + (startDate.getMonth() + 1).toString() : (startDate.getMonth() + 1);
+ //                var day = startDate.getDate().toString().length == 1 ? "0" + startDate.getDate() : startDate.getDate();
+ //                var week = weeks[startDate.getDay()];
+ //                dataArr.push(month + "月" + day + '日（周' + week + '）');
+ //                startDate.setDate(startDate.getDate() + 1);
+ 
+ //            }
+ //            dataArr[0] = '今天' + dataArr[0].slice(6, 10);
+ //            dataArr[1] = '明天' + dataArr[1].slice(6, 10);
+ //            dataArr[2] = '后天' + dataArr[2].slice(6, 10);
+ //            console.log(dataArr);
+</script>
+</html>

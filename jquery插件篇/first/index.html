@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>插件一</title>
+	<!-- <link rel="stylesheet" type="text/css" href="./css/wookmark.css"> -->
+	<style type="text/css">
+		body{
+			background-color: #e5e5e5;
+		}
+		ul,ol {
+			list-style: none;
+		}
+		ul li {
+			background-color: #fff;
+			float: left;margin-left: 10px;
+		}
+		ul li img {
+			display: block;width: 300px;
+		}
+		ul li p {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<ul id="tiles">
+		<li>
+			<img src="https://img.alicdn.com/imgextra/i1/2287312091/TB2OGg.uXXXXXXpXXXXXXXXXXXX_!!2287312091.jpg" alt="" title="this is the caption">
+			<p>222</p>
+		</li>
+		<li>
+			<img src="https://img.alicdn.com/imgextra/i4/2287312091/TB2pwD9oFXXXXaSXFXXXXXXXXXX_!!2287312091.jpg" alt="" title="this is the caption">
+			<p>333333</p>
+		</li>
+		
+	</ul>
+</body>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/fall.js"></script>
+<script type="text/javascript" src="./js/jquery.sliphover.js"></script>
+<script type="text/javascript">
+	$('#tiles').sliphover({
+		fontColor: 'red',
+		
+	})
+</script>
+</html>

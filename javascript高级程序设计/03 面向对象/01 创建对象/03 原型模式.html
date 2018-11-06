@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+   function Person() {
+   }
+   Person.prototype.name = "Liucongmei";
+   Person.prototype.age = 29;
+   Person.prototype.job = "Software Eengineer";
+   Person.prototype.sayName = function() {
+       alert(this.name);
+   }
+   var person1 = new Person();
+   person1.sayName();
+//    var person2 = new Person();
+//    person2.sayName();
+//    alert(person1.sayName == person2.sayName)//true
+    //实例的属性和方法是共享的，所以person1.sayName == person2.sayName == true;
+//-----------------------------存在的问题
+    //1.省略为构造函数传递初始化参数这一环节
+    //2.如果原型存在引用类型，可能会造成实例对象共享属性
+    function Person() {};
+    Person.prototype = {
+        name: 'Nicholas',
+        age: 29,
+        jod: "Software Engineer",
+        friends: ["Liucongmei", "Greg"],
+        sayName: function() {
+            alert(this.name);
+        }
+    }
+    var person1 = new Person();
+    var person2 = new Person();
+    person1.friends.push("Van");
+    alert(person1.friends); //"Liucongmei", "Greg","Van"
+    alert(person2.friends); //"Liucongmei", "Greg","Van"
+    alert(person1.friends === person2.friends) //true
+</script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	 <div id="main" style="width: 600px;height:400px;"></div>
+	 <div id="mainLine" style="width: 600px;height:400px;"></div>
+	 <div id="mainPie" style="width: 600px;height:400px;"></div>
+</body>
+<script type="text/javascript" src="./js/plugins/jquery.min.js"></script>
+<script type="text/javascript" src="./js/plugins/echarts.js"></script>
+<script type="text/javascript" src="./js/Helper.js"></script>
+<!--  <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init($('#main')[0]);
+
+        // 指定图表的配置项和数据
+        var option = {
+            // title: {
+            //     text: 'ECharts 入门示例'
+            // },
+            tooltip: {},
+            // legend: {
+            //     data:['销量']
+            // },
+            xAxis: {
+                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            },
+            yAxis: {},
+            series: [{
+                // name: '销量',
+                type: 'bar',
+                data: [5, 20, 36, 10, 10, 20]
+            }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script> -->
+
+    <!--  -->
+    <script type="text/javascript">
+
+    	var chartOption = {
+    		title: {
+    			text: 'ECharts 入门示例'
+    		}, //标题
+    		legend: {
+				data:['下载行业', '其他']
+			},
+			xAxis: {
+                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"],
+                splitLine:{  
+            　　　　show:false  
+            　　} 
+             //    axisTick: {
+             //    	alignWithLabel: true
+            	// }
+        	},
+        	
+        	yAxis: [{ 
+        		type: 'value',  
+            	axisLabel: {  
+                  show: true,  
+                  interval: 'auto',  
+                  formatter: '{value} %'  
+                },  
+            	show: true,
+            	min: 0,
+				max: 100
+        	}],
+        	calculable : true,
+        	series: [{
+                name: '下载行业',
+                type: 'bar',
+                data: [10, 20, 5, 53, 60, 78],
+                barWidth: 20,
+                stack: '关键词'
+            //      itemStyle: {  
+            //     normal: {  
+            //         label: {  
+            //             show: true,  
+            //             position: 'top',  
+            //             formatter: '{b}\n{c}%'  
+            //         }  
+            //     }  
+            // }, 
+            }, {
+            	name: '其他',
+                type: 'bar',
+                data: [90, 80, 95, 47, 40, 22],
+                stack: '关键词'
+            }
+
+            ],
+    	}
+    	new EchartsHelper($('#main')[0], chartOption)
+   //  	$("#main").echartsHelper({
+   //  		title: {
+   //  			text: 'ECharts 入门示例'
+   //  		}, //标题
+   //  		legend: {
+			// 	data:['销量']
+			// },
+			// xAxis: {
+   //              data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"],
+   //           //    axisTick: {
+   //           //    	alignWithLabel: true
+   //          	// }
+   //      	},
+        	 
+   //      	yAxis: {},
+   //      	series: [{
+   //              name: '销量',
+   //              type: 'bar',
+   //              data: ['10%', '20%', '5%', '53%', '60%', '78%', '12%', '89%', '63%', '56%'],
+
+   //          }],
+   //          // color: ['rgb(95, 190, 170)']
+   //  	})
+   //  	$("#mainLine").echartsHelper({
+   //  		xAxis: {
+		 //        type: 'category',
+		 //        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+		 //    },
+		 //    yAxis: {
+		 //        type: 'value',
+		 //    },
+		 //    series: [{
+		 //        data: [820, 932, 901, 934, 1290, 1330, 1320],
+		 //        type: 'line',
+		 //        lineStyle: {
+		 //        	// type: ''
+		 //        },
+		 //        symbol:'circle',
+		 //        symbolSize: 6
+		 //    },{
+		 //    	data: [620, 900, 850, 934, 750, 1430, 1320],
+		 //    	type: 'line',
+		 //    },
+		 //    ]
+		    
+   //  	})
+
+
+   //  	$("#mainPie").echartsHelper({
+   //  		title : {
+   //      		text: '某站点用户访问来源',
+   //      		subtext: '纯属虚构',
+   //      		x:'center'
+   //  		},
+		 //    tooltip : {
+		 //        // trigger: 'item',
+		 //        formatter: "{a} <br/>{b} : {c} ({d}%)" //提示框的文字提示格式
+		 //    },
+		 //    toolbox: {
+			// 	show: false
+			// },
+		 //    legend: {
+		 //        data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+		 //    },
+		 //    series : [
+		 //        {
+		 //            name: '访问来源', 
+		 //            type: 'pie',
+		 //            data:[
+		 //                {value:335, name:'直接访问'},
+		 //                {value:310, name:'邮件营销'},
+		 //                {value:234, name:'联盟广告'},
+		 //                {value:135, name:'视频广告'},
+		 //                {value:1548, name:'搜索引擎'}
+		 //            ]            
+		 //        }
+		 //    ]
+   //  	})
+    </script>
+</html>

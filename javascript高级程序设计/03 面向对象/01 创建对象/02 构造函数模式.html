@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+//出现原因：使用工厂模式无法确定对象的类型
+    function Person(name, age, job) {
+        this.name = name;
+        this.age = age;
+        this.job = job;
+        this.sayName = function() {
+            alert(this.name);
+        }
+    }
+    var person1 = new Person('liucongmei', 24, 'Software Engineer');
+    var person2 = new Person('Greg', 27, 'Doctor');
+    //******注意构造函数都以大写字母开头
+//----------------------检测对象的类型，对象的constructor属性，用来标识对象的类型,但是还是instanceof检测对象的类型更可靠
+    alert(person1.constructor == Person); //true
+    alert(person1 instanceof  Object);//true 因为所有的对象均继承自Object;
+    alert(person2 instanceof  Person);//true
+
+// 存在的问题：每个方法都要在每个实例上重新创建一遍，因为方法也是函数，而函数是对象，所以定义了函数也就是实例化一个对象。这样会导致不同的作用域链和标识符解析，但是创建Function新实例的机制是一样的。
+// 因此不同实例上的同名函数是不相等的。
+    alert(person1.sayName == person2.sayName); //false；
+    //利用全局函数来解决但是如若存在很多个方法，就要定义很多的全局函数。那么自定义的引用类型就丝毫没有封装的必要了。
+//    function Person() {
+//        this.sayName = sayName;
+//    }
+//    function sayName() {
+//        alert(this.name)
+//    }
+</script>
+</body>
+</html>

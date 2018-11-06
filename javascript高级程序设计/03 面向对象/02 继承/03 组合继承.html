@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+//--------------也叫伪经典继承，将原型链和借用构造函数组合到一起。基本思路：原型链实现对原型属性和方法的继承，构造函数实现对实例属性的继承
+    function SuperType(name) {
+        this.name = name;
+        this.colors = ["red", "yellow", "blue"]
+    }
+    SuperType.prototype.sayName = function() {
+        alert(this.name);
+    }
+    function SubType(name, age) {
+        //继承属性
+        SuperType.call(this, name);
+        this.age = age;
+    }
+    SubType.prototype = new SuperType();
+    SubType.prototype.constructor = SubType;
+    SubType.prototype.sayAge = function() {
+        alert(this.age);
+    }
+    var instance1 = new SubType('Liucongmei', 24);
+    instance1.colors.push("black");
+    alert(instance1.colors); //"red", "yellow", "blue","black"
+    instance1.sayAge();//24
+    instance1.sayName();//Liucongmei
+    var instance2 = new SubType('Liuwanchang', 25);
+    alert(instance2.colors); //"red", "yellow", "blue"
+    instance2.sayAge(); //25
+    instance2.sayName(); //Liuwanchang
+    //SuperType构造函数定义了两个属性，name和colors；而其原型定义了一个方法：sayName(),SubType构造函数调用SuperType构造函数时传入name参数，后又定义了属于自己的age属性，然后将SuperType的实例赋值
+    //给了SubType的原型，又在该原型上定义了自己的方法sayAge(),这样，两个SubType实例分别有自己属性，又可以使用相同的方法了；
+
+//------------------------优点融合了原型链和构造函数的优点，成为js最常用的继承模式。。。
+
+//-------------------------缺点，会调用两次超类构造函数，一次是在创建子类型原型的时候，一次是在子类型构造函数内部。
+
+</script>
+</body>
+</html>

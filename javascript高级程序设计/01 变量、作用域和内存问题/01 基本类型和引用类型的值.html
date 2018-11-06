@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+//-----------------------------函数的传递参数-------------------------
+//js里所有的函数的参数都是按值传递的，基本类型就是基本类型的变量的复制，引用类型也就是引用类型的变量的复制一样的。
+    function setName(obj) {
+        obj.name = "Nicholas";
+    }
+    var person = new Object();
+    setName(person);
+    alert(person.name); //Nicholas
+    //person变量被复制后给了obj,在函数内部，person和obj引用的是同一对象，即使是按值传递，obj会按照引用来放问person对象存储的地址。
+
+//------------------------------------证明对象也是按值传递的-----------------------
+    function setName2(obj) {
+        obj.name2 = "liucongmei";
+        obj = new Object();
+        obj.name2 = "hello";
+    }
+    setName2(person);
+    alert(person.name2);//liucongmei;
+    //如果是按照引用传递，person.name2 = hello，实际上，在函数内部重写了obj,obj就是个局部对象了，在函数执行完毕后立即被注销。
+
+//------------------------------检测类型-------------------------------------
+    //检测基本类型
+    var a = true;
+    alert(typeof  a) //boolean
+    //检测引用类型
+
+    alert(person instanceof  Object);//t
+</script>
+</body>
+</html>

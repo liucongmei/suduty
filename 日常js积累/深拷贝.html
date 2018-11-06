@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		var a1 = {b: {c: {d:1}}}
+		//浅拷贝
+		function shallowClone(source) {
+			var target = {}
+			for(var i in source) {
+				if(source.hasOwnProperty) {
+					target[i] = source[i]
+				}
+			}
+			return target;
+		}
+		var a2 = shallowClone(a1)
+		console.log(a2.b.c === a1.b.c ) // true
+		// 深拷贝
+		function clone(source) {
+			var target = {}
+			//参数校验
+			if(!isObject(source)) {
+				return source
+			}	 
+			for(var i in source) {
+				if(source.hasOwnProperty) {
+					if(typeof source[i] === 'object') {
+						target[i] = clone(source[i])
+					}else {
+						target[i] = source[i]
+					}
+				}
+			}
+			return target
+		}
+		// 存在问题：没有对参数做检验；判断是否对象的逻辑不够严谨；没有考虑数组的兼容
+		// 对象判断
+		function isObject(obj) {
+			return Object.prototype.toString().call(x) === '[Object object]'
+		}
+		// 会存在问题 clone很深的时会发生堆栈溢出
+		// 采用循环来实现深拷贝
+		function cloneLoop(source) {
+			const root = {};
+			// 栈
+			const loopList = [
+				{
+					parent: root,
+					data: source,
+					key: undefined
+				}
+			]
+			while(loopList.length) {
+				const node = loopList.pop()
+				const parent = node.parent
+				const key = node.key
+				const data = node.data
+				let res = parent
+				// 初始化赋值目标，key为undefined则拷贝到父元素，否则拷贝到子元素
+				if (typeof key !== 'undefined') {
+		            res = parent[key] = {}
+		            console.log(res)
+		        }
+				for(let k in data) {
+					if(data.hasOwnProperty(k)) {
+						if(typeof data[k] === 'object') {
+							loopList.push({
+								parent: res,
+								key: k,
+								data: data[k]
+							})
+							console.log(k)
+							console.log({
+								parent: res,
+								key: k,
+								data: data[k]
+							})
+							console.log(loopList)
+						}else {
+							root[k] = data[k]
+						}
+					}
+				}
+			}
+			return root
+		}
+		var resultClone = cloneLoop(a1)
+		console.log(a1)
+		// 保持引用关系的拷贝
+		function cloneForce(source) {
+			const root = {}
+			const loopList = [
+				{
+					parent: root,
+					key: undefined,
+					data: source
+				}
+			]
+			while(loopList.length) {
+				const node = loopList.pop()
+				const parent = node.parent
+				const key = node.key
+				const data = node.data
+				for(let k in data) {
+					if(data.hasOwnProperty(k)) {
+						if(typeof data[k] === 'object') {
+							loopList.push({
+								parent: parent,
+								key: k,
+								data: data[k]
+							})
+						}else {
+							root[k] = data[key]
+						}
+					}
+				}
+			}
+		}
+	</script>
+</body>
+</html>

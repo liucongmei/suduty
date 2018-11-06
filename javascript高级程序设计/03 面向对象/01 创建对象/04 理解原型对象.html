@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function Person() {
+    }
+    Person.prototype.name = "Liucongmei";
+    Person.prototype.age = 29;
+    Person.prototype.job = "Software Eengineer";
+    Person.prototype.sayName = function() {
+        alert(this.name);
+    }
+    //只要创建函数，函数就有prototype属性，指向函数的原型对象；
+    //而所有的原型对象都有constructor属性，指向prototype属性所在的函数。如上的：Person函数
+    var person1 = new Person();
+    var person2 = new Person();
+    //实例化后再其内部包含有[[Prototype]]属性，指向构造函数的原型对象，但在主流的浏览器里有_proto_属性，这个链接存在于实例与构造函数的原型对象之间，不是存在实例与构造函数之间。
+// ----------------------------多个对象共享原型保存的属性和方法的基本原理；
+    //在调用person1.sayName()时，会先搜索实例person1有没有sayName属性；没有的话就查找person1的原型上有没有sayName属性，于是就返回。如果实例上有这个属性，就直接返回。
+//----------------------------为实例对象添加同名的属性，会屏蔽原型对象上的同名属性,原因是:多个对象共享原型保存的属性和方法的基本原理;
+   // person1.name = "Greg";
+    //alert(person1.name); //Greg
+    //alert(person2.name); //Liucongmei
+    //可以使用delete操作符删除实例属性，让其可访问原型对象的属性
+    //delete person1.name;
+    //alert(person1.name); //Liucongmei
+//---------------------------检测属性存在实例中还是原型里：hasOwnProperty()
+    alert(person1.hasOwnProperty("name")); //false;来自原型
+    person1.name = "Greg";
+    alert(person1.hasOwnProperty("name")); //true；来自实例
+    delete person1.name;
+    alert(person1.hasOwnProperty("name")); //false 来自原型
+</script>
+</body>
+</html>

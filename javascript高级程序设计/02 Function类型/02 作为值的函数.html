@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+//因为函数名就是一个变量，所以函数也可以作为值来使用，即不仅可以像传递参数一样把函数传递要给另一个函数，还可以把函数作为另一个函数的结果返回，
+    function creatComparionFunction(propertyName) {
+        return function(obj1, obj2){
+            var value1 = obj1[propertyName];
+            var value2 = obj2[propertyName];
+            if(value1 < value2) {
+                return -1;
+            }else if(value1 > value2) {
+                return 1;
+            }else {
+                return 0;
+            }
+        }
+    }
+    var data = [{name: 'Zachary', age: 28}, {name: 'Liucongmei', age: 29}];
+    data.sort(creatComparionFunction("name"));
+    console.log(data[0].name);//Liucongmei
+    data.sort(creatComparionFunction("age"));
+    console.log(data[0].name);//Zachary
+</script>
+</body>
+</html>

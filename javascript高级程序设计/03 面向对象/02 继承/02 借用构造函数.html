@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+//--------------借用构造函数也叫伪造对象或者经典继承。基本思想：在子类型构造函数的内部调用超类型构造函数，通过使用apply()和call()方式
+    function SuperType() {
+        this.colors = ["red", "blue", "green"];
+    }
+    function SubType() {
+        //继承了SuperType
+        SuperType.call(this);
+    }
+    var instance1 = new SubType();
+    instance1.colors.push('black');
+    alert(instance1.colors); //"red", "blue", "green",'black'
+    var instance2 = new SubType();
+    alert(instance2.colors); //"red", "blue", "green"
+    //借用call()或者apply()方法，在未来创建的SubType的实例环境下调用SuperType构造函数，这样就会在新的SubType得对象上执行SuperType()函数中定义的所有对象初始化代码，这样SubType的实例就具有colors属性的副本了；
+
+//--------------------传递参数
+    function SuperType2(name) {
+        this.name = name;
+        this.colors = ["red", "blue", "green"];
+    }
+    function SubType2(age) {
+        //继承了SuperType,同时传递了参数
+        SuperType2.call(this, "Liucongmei");
+        this.age = age;
+    }
+    var instance3  = new SubType2(24);
+    console.log(instance3.name); //Liucongmei
+    console.log(instance3.colors); //"red", "blue", "green"
+    console.log(instance3.age); //24
+    //为确保SuperType2构造函数不会重写子类的属性，可以在调用超类构造函数后，在添加应该在子类的中定义属性
+
+//--------------------------存在的问题
+    //1、方法都在构造函数中定义，函数的复用无从谈起
+    //2、在超类型的原型中定义方法，对于子类是不可见的。所有类型都只能使用构造函数模式。
+//-------------------------所以很少单独使用
+
+</script>
+</body>
+</html>

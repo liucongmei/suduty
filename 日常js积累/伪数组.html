@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>伪数组相关的操作</title>
+</head>
+<body>
+	<p>-----什么是伪数组----</p>
+	<div>
+		1、具有length属性，但是可以按照对数组的for循环的遍历来遍历
+		2、按索引方式存储数据
+		3、不具有数组的push()、pop()等方法
+	</div>
+	<p>伪数组出现的地方</p>
+	<div>
+		1、 函数中的隐藏变量 arguments 
+		2、 getElementsByTagName 获得的元素集合（NodeList）
+		3、某些自己定义的对象，比如：var obj = {"0": 'a', "1": 'b', "2": "c", "length": 3}
+	</div>
+	<p>-----如何把伪数组变成真正的数组-------</p>
+	<p>伪数组可以转换为真正数组条件:1.伪数组的键值需要为数字，否则转换后数组均无初始值<br>2.有length属性</p>
+	<div>
+		1、 Array.prototype.slice.call(array)
+		2、 Array.from(arrayLike)(es6)
+		3、
+		<script type="text/javascript">
+			function realArray(c) {
+			    try {
+			        return Array.prototype.slice.call(c);
+			    } catch (e) {
+			        var ret = [], i = 0, len = c.length;
+			        for (; i < len; i++) {
+			            ret[i] = (c[i]);
+			        }
+			        return ret;
+			    }
+			}
+		</script>
+	</div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+//-------------------实现原型链的基本模式
+    function SuperType() {
+        this.property = true;
+    }
+    SuperType.prototype.getSuperValue = function() {
+        return this.property;
+    }
+    function SubType() {
+        this.subproperty = false;
+    }
+    SubType.prototype = new SuperType();
+    SubType.prototype.getSubValue = function() {
+        return this.subproperty;
+    }
+//    var instance = new SubType();
+//    alert(instance.getSuperValue()); //true
+//    instance.property = false;
+//    alert(instance.property);
+    //类型SubType继承了SuperType，是通过创建SuperType的实例，并把实例赋值给了SubType.prototype;即重写了原型对象，
+    //instance.getSuperValue()会经历三个搜索步骤：1，搜索实例，2，搜索，SubType.prototype,3，搜索SuperType.prototype
+//-------------------------确定原型和实例的关系
+    //1、instanceof操作符,测试实例与原型链中出现过的构造函数，只要出现，结果就返回True
+//    alert(instance instanceof Object); //true
+//    alert(instance instanceof  SuperType); //true
+//    alert(instance instanceof  SubType); //true
+    //2、isPrototypeOf()，只要是原型链里出现过的函数就会返回True
+//    alert(Object.prototype.isPrototypeOf(instance)); //true
+//    alert(SuperType.prototype.isPrototypeOf(instance)); //true
+//    alert(SubType.prototype.isPrototypeOf(instance)); //true
+//--------------------------通过原型链实现继承时，不能使用对象字面量创建原型方法，因为这样会重写原型链，新的原型就是Object的实例，而非SuperType的实例。这样SubType与SuperType就没有关系了
+//    SubType.prototype = {
+//        getSubValue: function() {
+//            return this.subproperty;
+//        }
+//    }
+//    var instance = new SubType();
+    //alert(instance.getSuperValue()); //instance.getSuperValue is not a function; error
+//---------------------------存在的问题
+    //1、包含引用类型值得原型属性会被所有实例共享
+    //2、创建子类的实例时，不能向超类的构造函数出阿迪参数，所以实践中很少会单独使用原型链
+</script>
+</body>
+</html>
