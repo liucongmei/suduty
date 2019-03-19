@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  // var a = 1, b = function a(x){x&& a(--x)}
+  // alert(a)
+  // function a(x) {return x*2};var a;alert(a)
+  var name = "222";
+  var a = {
+    name: '111',
+    say: function() {
+      console.log(this.name)
+    }
+  }
+  var fun = a.say;
+  fun()
+  a.say()
+  var b = {
+    name: '333',
+    say: function(fun) {
+      fun()
+    }
+  }
+  b.say(a.say) 
+  b.say = a.say;
+  b.say()  
+  </script>
+  <script>
+    function Test() {this.verObj = undefined}
+    Test.prototype = function() {
+      var count = 0;
+      function Version() {
+        this.version = '1.1';
+      }
+      Version.prototype.setVersion = function(v) {this.version = v}
+      Version.prototype.getVersion = function(v) {return this.version}
+      return {
+        setCount: function(v) {count = v},
+        getCount: function() {return count},
+        setVersion: function(v) {this.verObj = this.verObj || new Version();console.log(this.verObj);this.verObj.setVersion(v)},
+        getVersion: function() {return this.verObj.getVersion()}
+      }
+    }()
+    var test1 = new Test();
+    var test2 = new Test();
+    test1.setCount(100);
+    test2.setCount(200);
+    test1.setVersion("1.1");
+    test2.setVersion("1.2");
+    console.log(test1.getCount())
+    console.log(test2.getCount())
+    console.log(test1.getVersion())
+    console.log(test2.getVersion())
+  </script>
+</body>
+</html>

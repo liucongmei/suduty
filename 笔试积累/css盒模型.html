@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>css盒模型</title>
+</head>
+<style type="text/css">
+	.test{width: 100px;height: 100px;padding:10px;border:2px solid red;margin: 10px auto;}
+</style>
+<body>
+	<div class="test" id="test"></div>
+</body>
+<script type="text/javascript">
+	console.log(document.getElementById('test').offsetWidth)
+	console.log(document.getElementById('test').clientWidth)
+</script>
+</html>

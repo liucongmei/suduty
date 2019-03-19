@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  Object.extend =function(targetObj,fnJson){
+    //扩展方法，类似于jQuery的$.extend,可以扩展类的方法，也可以合并对象
+    for(var fnName in fnJson){
+        targetObj[fnName]=fnJson[fnName];
+    }
+    return targetObj;
+};
+
+HttpAjax = (function(){
+    function HttpAjax(options){
+        var settings={
+            type:'post',        //请求类型
+            url:'',             //请求地址
+            data:{"id":-1},     //json格式的参数
+            success:function(){},//成功的回调函数
+            failure:function(){},//失败的回调函数
+            isAsyn:true           //是否为异步
+        };
+        this.options = Object.extend(settings,options);
+
+        Object.extend(HttpAjax.prototype,{
+            _createXhr:function(){
+                if (typeof XMLHttpRequest !== 'undefined') {
+                    return new XMLHttpRequest();
+                }
+                else if (typeof ActiveXObject !== 'undefined') {
+                    var versions = ['MSXML2.XMLHttp.6.0', 'MSXML2.XMLHttp.3.0', 'MSXML2.XMLHttp'];
+                    for (var i = 0, len = versions.length; i < len; i++) {
+                        try {
+                            var xhr = new ActiveXObject(versions[i]);
+                            this.IsCreateOk = versions[i];
+                            return xhr;
+                        }
+                        catch (e) { }
+                    }
+                    if (typeof this.IsCreateOk === 'undefined') {
+                        throw new Error("您的浏览器版本过低，无法创建异步对象，请升级您的浏览器！");
+                    }
+                }
+            },
+            _encodeData:function(paramters){
+                var data = [];
+                for (var name in paramters) {
+                    //将数组中的数据以=拼接后再添加到data数组中 [name=aa,age=11]
+                    var _regesp = /%20/g; //空格的正则表达式
+                    var _value = paramters[name].toString(); //获取值
+                    data.push(encodeURIComponent(name).replace(_regesp, '+') + "=" + encodeURIComponent(_value).replace(_regesp, '+'));
+                }
+                //以&将数组元素拼接后返回 如：name=aa&age=11
+                return data.join("&");
+            },
+            _regCallback:function(xhr){
+                var _this=this;
+                xhr.onreadystatechange = function(){
+                    if (xhr.readyState == 4) {
+                        if (xhr.status >= 200 && xhr.status < 300 || xhr.status == 300) {
+                            _this.options.success(_this._getResponseData(xhr), xhr.statusText);
+                        } else {
+                            _this.options.failure(xhr.status, xhr.statusText);
+                        }
+                    }
+                }
+            },
+            _getResponseData:function(xhr){
+                var responseType = xhr.getResponseHeader("Content-Type");
+                switch (responseType) {
+                    case 'text/xml':
+                        return xhr.responseXML;
+                    case 'text/json':
+                    case 'text/javascript':
+                    case 'application/javascript':
+                    case 'application/x-javascript':
+                        return eval('(' + xhr.responseText + ')');
+                    default:
+                        return xhr.responseText;
+                };
+            },
+            _init:function(options){
+                this.options=options;
+                if(this.options.url=="") return;
+                this.xhr = this._createXhr();//创建异步对象
+                this._regCallback(this.xhr);//注册回调事件
+
+                //根据请求类型，发送异步请求
+                if(this.options.type.toLowerCase()=="post"){
+                    this._post(this.xhr);
+                }
+                else{
+                    this._get(this.xhr);
+                }
+            },
+            _post:function(xhr){
+                this.xhr=xhr;
+                this.data=this._encodeData(this.options.data);
+                this.url=this.options.url+"?d=" + parseInt(Math.random()*100+1,10);
+                this.asyn=!!this.options.isAsyn;
+
+                xhr.open("POST", this.url, this.asyn);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send(this.data);
+            },
+            _get:function(xhr){
+                this.xhr=xhr;
+                this.data=this._encodeData(this.options.data);
+                this.url=this.options.url+'?' + this.data + '&d=' + parseInt(Math.random()*100+1,10);
+                this.asyn=!!this.options.isAsyn;
+
+                xhr.open('GET', this.url, this.asyn);
+                xhr.send(null);
+            }
+        });
+       this._init(this.options);
+    };
+    return HttpAjax;
+})(window);
+</script>
+</html>

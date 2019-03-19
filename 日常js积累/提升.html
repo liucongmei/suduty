@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>作用域提升问题</title>
+</head>
+<body>
+<script type="text/javascript">
+	// 函数声明和变量都会被提升，但是函数会首先被提升，然后才是变量
+	var foo;
+	foo() // 1
+	function foo() {console.log(1)}
+	foo = function () {console.log(2)}
+	foo() //2
+</script>
+<script type="text/javascript">
+	// 每个作用域内都会进行声明提升操作
+	foo2()
+	function foo2() {
+		console.log(a) //undefined
+		var a = 2;
+	}
+	//函数表达式不会进行提升
+	// foo3() // foo3 is not a function TypeError
+	var foo3 = function bar() {console.log(3)}
+	// bar() // bar is not a function ReferenceError
+</script>
+<script type="text/javascript">
+	function bar(){alert(1)}
+	bar = 3
+	console.log(bar) // 3
+</script>
+</body>
+</html>
