@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>数组判断</title>
+</head>
+<body>
+	<div class="test"></div>
+	<div class="test"></div>
+	<div class="test"></div>
+	<script type="text/javascript">
+		var arr = [];
+		var test = document.getElementsByClassName('test')
+		console.log(typeof my)
+		console.log(Array.isArray(arr))
+		console.log('测试')
+		console.log(Array.isArray(test))
+		function isArray(arr) {
+			return !! arr && typeof arr === 'object' && arr.constructor === Array	
+		}
+
+		console.log(isArray(arr))
+		console.log('测试2')
+		console.log(isArray(test))
+		console.log(Object.prototype.toString.call(arr) === '[object Array]');
+		console.log('测试3')
+		console.log(Object.prototype.toString.call(test) === '[object Array]')
+	</script>
+</body>
+</html
